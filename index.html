@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Mercado</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <main class="dashboard">
+        <section class="panel panel-usa" data-panel="usa">
+            <nav class="tab-list" aria-label="Pestañas mercado USA">
+                <button class="tab is-active" type="button" data-target="ticker">Ticker</button>
+                <button class="tab" type="button" data-target="grafico">Gráfico</button>
+            </nav>
+            <div class="tab-content">
+                <div class="tab-pane is-active" data-content="ticker">
+                    <div class="tradingview-widget-container" data-widget-src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="application/json" class="tradingview-config">
+                        {
+                            "symbols": [
+                                { "proName": "NASDAQ:AAPL", "title": "APPLE" },
+                                { "proName": "NASDAQ:NVDA", "title": "NVDA" },
+                                { "proName": "NASDAQ:MSFT", "title": "MICROSOFT" },
+                                { "proName": "NASDAQ:TSLA", "title": "TESLA" },
+                                { "proName": "NASDAQ:GOOGL", "title": "GOOGLE" },
+                                { "proName": "NASDAQ:AMZN", "title": "AMAZON" },
+                                { "proName": "NASDAQ:MELI", "title": "MERCADOLIBRE" },
+                                { "proName": "NASDAQ:META", "title": "META" },
+                                { "proName": "NASDAQ:AMD", "title": "AMD" },
+                                { "proName": "NASDAQ:INTC", "title": "INTEL" }
+                            ],
+                            "colorTheme": "dark",
+                            "locale": "es",
+                            "largeChartUrl": "",
+                            "isTransparent": true,
+                            "showSymbolLogo": true,
+                            "displayMode": "adaptive"
+                        }
+                        </script>
+                    </div>
+                </div>
+                <div class="tab-pane" data-content="grafico">
+                    <div class="tradingview-widget-container" data-widget-src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" style="height:100%;width:100%">
+                        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                        <div class="tradingview-widget-attribution">
+                            <a href="https://es.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener nofollow" target="_blank">
+                                <span class="blue-text">Track all markets on TradingView</span>
+                            </a>
+                        </div>
+                        <script type="application/json" class="tradingview-config">
+                        {
+                            "allow_symbol_change": true,
+                            "calendar": false,
+                            "details": false,
+                            "hide_side_toolbar": true,
+                            "hide_top_toolbar": false,
+                            "hide_legend": false,
+                            "hide_volume": false,
+                            "hotlist": false,
+                            "interval": "D",
+                            "locale": "es",
+                            "save_image": true,
+                            "style": "2",
+                            "symbol": "NASDAQ:AAPL",
+                            "theme": "dark",
+                            "timezone": "Etc/UTC",
+                            "backgroundColor": "rgba(15, 15, 15, 1)",
+                            "gridColor": "rgba(242, 242, 242, 0.1)",
+                            "watchlist": [],
+                            "withdateranges": false,
+                            "compareSymbols": [],
+                            "studies": [],
+                            "autosize": true
+                        }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="panel panel-arg" data-panel="arg">
+            <nav class="tab-list" aria-label="Pestañas mercado ARG">
+                <button class="tab is-active" type="button" data-target="ticker">Ticker</button>
+                <button class="tab" type="button" data-target="grafico">Gráfico</button>
+            </nav>
+            <div class="tab-content">
+                <div class="tab-pane is-active" data-content="ticker">
+                    <p>Información de tickers (próximamente).</p>
+                </div>
+                <div class="tab-pane" data-content="grafico">
+                    <p>Gráfico interactivo del mercado ARG (próximamente).</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
