@@ -1,25 +1,70 @@
-﻿(function () {
-    initTabs();
+(function () {
+    const ORIGINAL_MARKUP_KEY = '__tvOriginalMarkup';
+
+    initViewNavigation();
     initTradingViewEmbeds();
 
-    function initTabs() {
-        const panels = document.querySelectorAll('.panel');
+    function initViewNavigation() {
+        const viewButtons = document.querySelectorAll('[data-view-target]');
+        const views = document.querySelectorAll('.view');
 
-        panels.forEach(panel => {
-            const tabs = panel.querySelectorAll('.tab');
-            const panes = panel.querySelectorAll('.tab-pane');
+        if (!viewButtons.length || !views.length) {
+            return;
+        }
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.dataset.target;
+        const viewList = Array.from(views);
 
-                    tabs.forEach(t => t.classList.toggle('is-active', t === tab));
-                    panes.forEach(pane => {
-                        const isActive = pane.dataset.content === target;
-                        pane.classList.toggle('is-active', isActive);
-                    });
-                });
+        const showView = (target) => {
+            const targetView = viewList.find((view) => view.dataset.view === target);
+            if (!targetView) {
+                return false;
+            }
+
+            let hasChanged = false;
+
+            viewList.forEach((view) => {
+                const shouldBeActive = view === targetView;
+                const wasActive = view.classList.contains('is-active');
+
+                view.classList.toggle('is-active', shouldBeActive);
+
+                if (wasActive !== shouldBeActive) {
+                    hasChanged = true;
+                }
             });
+
+            return hasChanged;
+        };
+
+        viewButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.viewTarget;
+                if (!target) {
+                    return;
+                }
+
+                const changed = showView(target);
+                if (!changed) {
+                    return;
+                }
+
+                resetTradingViewEmbeds();
+                initTradingViewEmbeds();
+            });
+        });
+    }
+
+    function resetTradingViewEmbeds() {
+        const widgetContainers = document.querySelectorAll('[data-widget-src]');
+        widgetContainers.forEach((container) => {
+            const generatedScript = container.querySelector('script[data-generated="tradingview"]');
+            if (generatedScript) {
+                generatedScript.remove();
+            }
+
+            if (container[ORIGINAL_MARKUP_KEY]) {
+                container.innerHTML = container[ORIGINAL_MARKUP_KEY];
+            }
         });
     }
 
@@ -29,7 +74,11 @@
             return;
         }
 
-        widgetContainers.forEach(container => {
+        widgetContainers.forEach((container) => {
+            if (!container[ORIGINAL_MARKUP_KEY]) {
+                container[ORIGINAL_MARKUP_KEY] = container.innerHTML;
+            }
+
             const configNode = container.querySelector('.tradingview-config');
             if (!configNode) {
                 return;

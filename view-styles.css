@@ -1,0 +1,186 @@
+﻿:root {
+    --home-card-bg: rgba(15, 23, 42, 0.45);
+    --home-card-border: rgba(248, 250, 252, 0.08);
+}
+
+.view {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.view.is-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-panel {
+    padding: 0;
+}
+
+.view-panel.is-active {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.view-panel .panel {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.view-home {
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+.home-content {
+    width: min(1280px, 100%);
+    padding: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 2.5rem);
+    border-radius: 1.75rem;
+    border: 1px solid var(--home-card-border);
+    background-color: var(--home-card-bg);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.home-content h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+}
+
+.home-content p {
+    margin: 0;
+    color: rgba(248, 250, 252, 0.78);
+    line-height: 1.6;
+}
+
+.home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    justify-content: center;
+}
+
+.cta-button {
+    min-width: 180px;
+    min-height: 100px;
+    padding: 0.9rem 1.85rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #393d42;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-button[data-view-target="usa"] {
+    background: url('img/USA-flag.png') center/cover;
+    opacity: 0.3;
+    box-shadow: 0 18px 32px rgba(31, 78, 121, 0.35);
+}
+
+.cta-button[data-view-target="arg"] {
+    background: url('img/ARG-flag.png') center/cover;
+    opacity: 0.3;
+    box-shadow: 0 18px 32px rgba(13, 152, 186, 0.35);
+}
+
+.cta-button:is(:hover, :focus-visible) {
+    transform: translateY(-2px);
+    opacity: 0.6;
+    outline: none;
+    border: 3px solid var(--select-color);
+}
+
+.view-panel .panel {
+    box-shadow: 0 30px 50px rgba(15, 23, 42, 0.35);
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid var(--tab-border);
+    background: var(--panel-surface);
+    backdrop-filter: blur(12px);
+}
+
+.nav-btn-home {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: none;
+    background: rgba(248, 250, 252, 0.1);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-btn-usa {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: none;
+    background: url('img/USA-flag.png') center/cover;
+    opacity: 0.3;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.nav-btn-arg {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: none;
+    background: url('img/ARG-flag.png') center/cover;
+    opacity: 0.3;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-btn:is(:hover, :focus-visible) {
+    opacity: 0.6;
+    transform: translateY(-1px);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .view {
+        min-height: 100vh;
+        padding: 1.5rem 1rem;
+    }
+
+    .view.view-panel {
+        padding: 0;
+    }
+
+    .home-content {
+        gap: 1.25rem;
+    }
+}
+
+   
+  
