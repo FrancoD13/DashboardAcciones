@@ -1,8 +1,10 @@
-(function () {
+﻿(function () {
     const ORIGINAL_MARKUP_KEY = '__tvOriginalMarkup';
 
+    obtenerCotizacionDolar();
     initViewNavigation();
     initTradingViewEmbeds();
+    
 
     function initViewNavigation() {
         const viewButtons = document.querySelectorAll('[data-view-target]');
@@ -12,28 +14,23 @@
             return;
         }
 
-        const viewList = Array.from(views);
-
         const showView = (target) => {
-            const targetView = viewList.find((view) => view.dataset.view === target);
+            const targetView = document.querySelector(`.view[data-view="${target}"]`);
             if (!targetView) {
                 return false;
             }
 
-            let hasChanged = false;
+            const activeView = document.querySelector('.view.is-active');
+            if (activeView === targetView) {
+                return false;
+            }
 
-            viewList.forEach((view) => {
-                const shouldBeActive = view === targetView;
-                const wasActive = view.classList.contains('is-active');
+            if (activeView) {
+                activeView.classList.remove('is-active');
+            }
 
-                view.classList.toggle('is-active', shouldBeActive);
-
-                if (wasActive !== shouldBeActive) {
-                    hasChanged = true;
-                }
-            });
-
-            return hasChanged;
+            targetView.classList.add('is-active');
+            return true;
         };
 
         viewButtons.forEach((button) => {
@@ -50,6 +47,8 @@
 
                 resetTradingViewEmbeds();
                 initTradingViewEmbeds();
+                obtenerCotizacionDolar();
+                
             });
         });
     }
@@ -104,4 +103,92 @@
             container.appendChild(script);
         });
     }
+
+    async function obtenerCotizacionDolar() {
+
+            const urlDolarActual = "https://dolarapi.com/v1/dolares/oficial";
+            const url = "https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones/USD";
+            const bloqueCotizacion = document.getElementById('valor-cotizacion');
+            const bloqueFecha = document.getElementById('fecha-cotizacion');
+            const bloqueVariacion = document.getElementById('variacion-diaria');
+
+            // Asegurarse de que el bloque diga "Cargando..."
+            bloqueCotizacion.textContent = "Cargando...";
+            bloqueFecha.textContent = "";
+
+            try {
+                // 1. Realizar la solicitud a la API
+                const respuestaActual = await fetch(urlDolarActual);
+                if (!respuestaActual.ok) {
+                    throw new Error(`Error HTTP: ${respuestaActual.status}`);
+                }
+
+                const respuesta = await fetch(url);
+                if (!respuesta.ok) {
+                    throw new Error(`Error HTTP: ${respuesta.status}`);
+                }
+
+                // 2. Convertir la respuesta a JSON
+                const datosActual = await respuestaActual.json();
+                const datos = await respuesta.json();
+
+                // La API del BCRA devuelve un array de objetos. Se asume que el primer elemento
+                // contiene la cotización más reciente.
+
+                if(datosActual && datos && datos.results && datos.results.length > 0) {
+
+                    const cotizacionAnterior = datos.results[0].detalle[0];
+                    const valorAnterior = cotizacionAnterior.tipoCotizacion;
+                    const fechaAnterior = datos.results[0].fecha; // Ej. "2023-10-06T00:00:00"
+
+                    const valorActual = datosActual.venta;
+                    const fechaActual = datosActual.fechaActualizacion;
+                    let variacion = (valorActual/valorAnterior)-1;
+                    const variacionFormateada = new Intl.NumberFormat('es-AR', {
+                            style: 'percent',
+                            minimumFractionDigits: 2 // La API devuelve varios decimales
+                        }).format(variacion);
+
+                    if (valorActual) {
+                        const valorFormateado = new Intl.NumberFormat('es-AR', {
+                            style: 'currency',
+                            currency: 'ARS',
+                            minimumFractionDigits: 2 // La API devuelve varios decimales
+                        }).format(valorActual);
+                        bloqueCotizacion.textContent = valorFormateado;
+                        bloqueVariacion.textContent = `(${variacionFormateada})`;
+                        if (variacion >= 0) {
+                            bloqueVariacion.classList.add('positivo');
+                        } else {
+                            bloqueVariacion.classList.add('negativo');
+                        }
+                    } else {
+                        bloqueCotizacion.textContent = "Valor no encontrado";
+                    }
+
+                    if (fechaActual) {
+                        const fechaActual = new Date();
+                        const fechaFormateada = fechaActual.toLocaleDateString('es-AR', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric'
+                        });
+                        bloqueFecha.textContent = `Actualizado: ${fechaFormateada}`;
+                    }
+                } else {
+                    bloqueCotizacion.textContent = "Datos de cotización no disponibles.";
+                }
+                
+
+                
+
+            } catch (error) {
+                // 5. Manejar errores (ej. problemas de red o de la API)
+                console.error("Error al obtener la cotización:", error);
+                bloqueCotizacion.textContent = "Error al cargar los datos.";
+            }
+        }
+
 })();

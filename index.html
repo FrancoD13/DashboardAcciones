@@ -2,15 +2,38 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
     <title>Dashboard de Mercado</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="view-styles.css">
     <script src="main.js" defer></script>
 </head>
 <body>
+    <div class="navegation-main-tab">
+        <section>
+            <nav class="top-nav" aria-label="Navegacion panel USA">
+                    <button class="nav-btn nav-btn-home" type="button" data-view-target="home">HOME</button>
+                    <button class="nav-btn nav-btn-usa" type="button" data-view-target="usa"></button>
+                    <button class="nav-btn nav-btn-arg" type="button" data-view-target="arg"></button>
+            </nav>
+        </section>
+    </div>
     <main class="dashboard">
         <section class="view view-home is-active" data-view="home">
+            <div class="home-summary" id="cotizacion-dolar-bloque">
+                <table>
+                    <tr>
+                        <td class="table-cotization">
+                            <span class="home-summary__label">DOLAR OFICIAL</span>
+                        </td>
+                        <td class="table-cotization">
+                            <span class="home-summary__label" id="variacion-diaria"></span>
+                        </td>
+                    </tr>
+                </table>
+                <span  class="home-summary__value" id="valor-cotizacion">Cargando...</span>
+                <span class="home-summary__date" id="fecha-cotizacion"></span>
+            </div>
             <div class="home-content">
                 <h1>Selecciona un panel</h1>
                 <p>Elige el mercado que quieres visualizar.</p>
@@ -23,10 +46,6 @@
 
         <section class="view view-panel" data-view="usa">
             <div class="panel panel-usa" data-panel="usa">
-                <nav class="top-nav" aria-label="Navegacion panel USA">
-                    <button class="nav-btn nav-btn-home" type="button" data-view-target="home">Inicio</button>
-                    <button class="nav-btn nav-btn-arg" type="button" data-view-target="arg">ARG</button>
-                </nav>
                 <div class="tab-content">
                     <div class="tab-pane is-active" data-content="ticker">
                         <div class="tradingview-widget-container" data-widget-src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
@@ -96,10 +115,6 @@
 
         <section class="view view-panel" data-view="arg">
             <div class="panel panel-arg" data-panel="arg">
-                <nav class="top-nav" aria-label="Navegacion panel ARG">
-                    <button class="nav-btn nav-btn-home" type="button" data-view-target="home">Inicio</button>
-                    <button class="nav-btn nav-btn-usa" type="button" data-view-target="usa">USA</button>
-                </nav>
                 <div class="tab-content">
                     <div class="tab-pane is-active" data-content="ticker">
                         <div class="tradingview-widget-container" data-widget-src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">

@@ -17,6 +17,11 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     display: block;
+    margin:0;
+}
+
+.navegation-main-tab {
+    padding-bottom: 0px;
 }
 
 .panel {
